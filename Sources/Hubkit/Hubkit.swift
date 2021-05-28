@@ -44,9 +44,7 @@ extension HubkitClient {
     ///
     /// - Returns: Future<Account>
     public func account() throws -> EventLoopFuture<Account> {
-        getRequest(endpoint: "me").flatMapThrowing {
-            try $0.content.decode(Account.self)
-        }
+        getRequest(endpoint: "me").flatMapThrowing { try $0.content.decode(Account.self) }
     }
 
     /// Get `Device` for given UUID
