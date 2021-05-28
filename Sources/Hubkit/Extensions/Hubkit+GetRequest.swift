@@ -4,6 +4,7 @@ import AsyncHTTPClient
 extension HubkitClient {
     func getRequest(endpoint: String) -> EventLoopFuture<ClientResponse> {
         var headers = HTTPHeaders()
+        headers.add(name: .accept, value: "application/json")
         headers.add(name: "apikey", value: config.apiKey)
 
         let hubkitURI = URI(string: "\(self.baseApiUrl)/\(endpoint)")

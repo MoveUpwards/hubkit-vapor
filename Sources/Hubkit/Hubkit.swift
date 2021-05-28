@@ -4,9 +4,10 @@ import HubkitModel
 
 // MARK: - Service
 public protocol HubkitProvider {
-    func account() throws -> EventLoopFuture<Account>
-    func device(id: UUID) throws -> EventLoopFuture<Device>
-    func activate(id: UUID) throws -> EventLoopFuture<Device>
+    func account() throws -> EventLoopFuture<HubkitModel.Account>
+    func device(id: UUID) throws -> EventLoopFuture<HubkitModel.Device>
+    func activate(id: UUID) throws -> EventLoopFuture<HubkitModel.Device>
+    func session(id: UUID) throws -> EventLoopFuture<HubkitModel.Session>
     
     func delegating(to eventLoop: EventLoop) -> HubkitProvider
 }
@@ -43,8 +44,8 @@ extension HubkitClient {
     /// Get `Account` linked to api key
     ///
     /// - Returns: Future<Account>
-    public func account() throws -> EventLoopFuture<Account> {
-        getRequest(endpoint: "me").flatMapThrowing { try $0.content.decode(Account.self) }
+    public func account() throws -> EventLoopFuture<HubkitModel.Account> {
+        getRequest(endpoint: "me").flatMapThrowing { try $0.content.decode(HubkitModel.Account.self) }
     }
 
     /// Get `Device` for given UUID
@@ -53,8 +54,8 @@ extension HubkitClient {
     ///   - id: UUID
     ///
     /// - Returns: Future<Device>
-    public func device(id: UUID) throws -> EventLoopFuture<Device> {
-        getRequest(endpoint: "devices/\(id.uuidString)").flatMapThrowing { try $0.content.decode(Device.self) }
+    public func device(id: UUID) throws -> EventLoopFuture<HubkitModel.Device> {
+        getRequest(endpoint: "devices/\(id.uuidString)").flatMapThrowing { try $0.content.decode(HubkitModel.Device.self) }
     }
 
     /// Activate `Device` for given UUID
@@ -63,7 +64,17 @@ extension HubkitClient {
     ///   - id: UUID
     ///
     /// - Returns: Future<Device>
-    public func activate(id: UUID) throws -> EventLoopFuture<Device> {
-        patchRequest(endpoint: "devices/\(id.uuidString)/activate").flatMapThrowing { try $0.content.decode(Device.self) }
+    public func activate(id: UUID) throws -> EventLoopFuture<HubkitModel.Device> {
+        patchRequest(endpoint: "devices/\(id.uuidString)/activate").flatMapThrowing { try $0.content.decode(HubkitModel.Device.self) }
+    }
+
+    /// Get `Session` for given UUID
+    ///
+    /// - Parameters:
+    ///   - id: UUID
+    ///
+    /// - Returns: Future<Session>
+    public func session(id: UUID) throws -> EventLoopFuture<HubkitModel.Session> {
+        getRequest(endpoint: "sessions/\(id.uuidString)").flatMapThrowing { try $0.content.decode(HubkitModel.Session.self) }
     }
 }
