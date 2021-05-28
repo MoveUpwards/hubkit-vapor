@@ -9,6 +9,8 @@ extension HubkitClient {
         let hubkitURI = URI(string: "\(self.baseApiUrl)/\(endpoint)")
 
         return self.client.get(hubkitURI, headers: headers) { _ in }
-            .flatMapThrowing { try self.parse(response: $0) }
+            .flatMapThrowing {
+                try self.parse(response: $0)
+            }
     }
 }
