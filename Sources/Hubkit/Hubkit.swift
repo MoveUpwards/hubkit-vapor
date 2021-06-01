@@ -5,9 +5,10 @@ import HubkitModel
 // MARK: - Service
 public protocol HubkitProvider {
     func account(_ endpoint: Endpoint.Account) throws -> EventLoopFuture<ResponseEncodable>
-    func device(_ endpoint: Endpoint.Device) throws -> EventLoopFuture<ResponseEncodable>
-    func session(_ endpoint: Endpoint.Session) throws -> EventLoopFuture<ResponseEncodable>
-    func rawData(_ endpoint: Endpoint.RawData) throws -> EventLoopFuture<ResponseEncodable>
+    
+    func device<C: Content>(_ endpoint: Endpoint.Device, body: C?) throws -> EventLoopFuture<ResponseEncodable>
+    func session<C: Content>(_ endpoint: Endpoint.Session, body: C?) throws -> EventLoopFuture<ResponseEncodable>
+    func rawData<C: Content>(_ endpoint: Endpoint.RawData, body: C?) throws -> EventLoopFuture<ResponseEncodable>
     
     func delegating(to eventLoop: EventLoop) -> HubkitProvider
 }
@@ -50,22 +51,25 @@ public struct HubkitClient: HubkitProvider {
 extension HubkitClient {
     /// Get `Account` linked to api key
     ///
+    /// - Parameters:
+    ///   - body: `Content`
+    ///
     /// - Returns: Future<ResponseEncodable>
     public func account(_ endpoint: Endpoint.Account) throws -> EventLoopFuture<ResponseEncodable> {
-        send(endpoint.method, to: endpoint.uri, beforeSend: { req in
-            if let content = endpoint.content { try req.content.encode(content) }
-        }).flatMapThrowing { try $0.content.decode(HubkitModel.Account.self, using: decoder) }
+        send(endpoint.method, to: endpoint.uri)
+            .flatMapThrowing { try $0.content.decode(HubkitModel.Account.self, using: decoder) }
     }
 
     /// `Device`available endpoints
     ///
     /// - Parameters:
     ///   - endpoint: `Endpoint.Device`
+    ///   - body: `Content`
     ///
     /// - Returns: Future<ResponseEncodable>
-    public func device(_ endpoint: Endpoint.Device) throws -> EventLoopFuture<ResponseEncodable> {
+    public func device<C: Content>(_ endpoint: Endpoint.Device, body: C?) throws -> EventLoopFuture<ResponseEncodable> {
         send(endpoint.method, to: endpoint.uri, beforeSend: { req in
-            if let content = endpoint.content { try req.content.encode(content) }
+            if let content = body { try req.content.encode(content) }
         }).flatMapThrowing { try $0.content.decode(HubkitModel.Device.self, using: decoder) }
     }
 
@@ -73,11 +77,12 @@ extension HubkitClient {
     ///
     /// - Parameters:
     ///   - endpoint: `Endpoint.Session`
+    ///   - body: `Content`
     ///
     /// - Returns: Future<ResponseEncodable>
-    public func session(_ endpoint: Endpoint.Session) throws -> EventLoopFuture<ResponseEncodable> {
+    public func session<C: Content>(_ endpoint: Endpoint.Session, body: C?) throws -> EventLoopFuture<ResponseEncodable> {
         send(endpoint.method, to: endpoint.uri, beforeSend: { req in
-            if let content = endpoint.content { try req.content.encode(content) }
+            if let content = body { try req.content.encode(content) }
         }).flatMapThrowing { try $0.content.decode(HubkitModel.Session.self, using: decoder) }
     }
 
@@ -85,11 +90,12 @@ extension HubkitClient {
     ///
     /// - Parameters:
     ///   - endpoint: `Endpoint.RawData`
+    ///   - body: `Content`
     ///
     /// - Returns: Future<ResponseEncodable>
-    public func rawData(_ endpoint: Endpoint.RawData) throws -> EventLoopFuture<ResponseEncodable> {
+    public func rawData<C: Content>(_ endpoint: Endpoint.RawData, body: C?) throws -> EventLoopFuture<ResponseEncodable> {
         send(endpoint.method, to: endpoint.uri, beforeSend: { req in
-            if let content = endpoint.content { try req.content.encode(content) }
+            if let content = body { try req.content.encode(content) }
         }).flatMapThrowing { try $0.content.decode(HubkitModel.RawData.self, using: decoder) }
     }
 }
