@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/MoveUpwards/hubkit-model-swift.git",
         "state": {
           "branch": null,
-          "revision": "b5bda61b5a1e3757aa7174aadf60aa8c46ca337a",
-          "version": "2.0.3"
+          "revision": "773c4bf9851cd687875fd9f25897c23e24ffa4ae",
+          "version": "2.0.5"
         }
       },
       {
@@ -141,8 +141,8 @@
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "9d154df6214a1d6027f04a495e8981bac49224da",
-          "version": "4.45.6"
+          "revision": "bc194e3868cbd9cf3cd41392e9b10d6fad089bc4",
+          "version": "4.45.7"
         }
       },
       {

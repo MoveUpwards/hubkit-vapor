@@ -8,6 +8,7 @@ public protocol HubkitProvider {
     func device(id: UUID) throws -> EventLoopFuture<HubkitModel.Device>
     func activate(id: UUID) throws -> EventLoopFuture<HubkitModel.Device>
     func session(id: UUID) throws -> EventLoopFuture<HubkitModel.Session>
+    func rawData(id: UUID) throws -> EventLoopFuture<HubkitModel.RawData>
     
     func delegating(to eventLoop: EventLoop) -> HubkitProvider
 }
@@ -85,5 +86,16 @@ extension HubkitClient {
     public func session(id: UUID) throws -> EventLoopFuture<HubkitModel.Session> {
         send(.GET, to: "sessions/\(id.uuidString)")
             .flatMapThrowing { try $0.content.decode(HubkitModel.Session.self, using: decoder) }
+    }
+
+    /// Get `RawData` for given UUID
+    ///
+    /// - Parameters:
+    ///   - id: UUID
+    ///
+    /// - Returns: Future<Session>
+    public func rawData(id: UUID) throws -> EventLoopFuture<HubkitModel.RawData> {
+        send(.GET, to: "raw_datas/\(id.uuidString)")
+            .flatMapThrowing { try $0.content.decode(HubkitModel.RawData.self, using: decoder) }
     }
 }
