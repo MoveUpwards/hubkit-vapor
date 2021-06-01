@@ -10,7 +10,7 @@ public protocol HubkitProvider {
     func device(id: UUID) throws -> EventLoopFuture<HubkitModel.Device>
     func activate(device id: UUID) throws -> EventLoopFuture<HubkitModel.Device>
 
-    func create(session: HubkitModel.Session) throws -> EventLoopFuture<HubkitModel.Session>
+    func create(session: HubkitModel.Session.Form) throws -> EventLoopFuture<HubkitModel.Session>
     func session(id: UUID) throws -> EventLoopFuture<HubkitModel.Session>
     func ready(session id: UUID) throws -> EventLoopFuture<HubkitModel.Session>
     func delete(session id: UUID) throws -> EventLoopFuture<HTTPStatus>
@@ -100,7 +100,7 @@ extension HubkitClient {
     /// Create `Session`
     ///
     /// - Returns: Future<HubkitModel.Device>
-    public func create(session: HubkitModel.Session) throws -> EventLoopFuture<HubkitModel.Session> {
+    public func create(session: HubkitModel.Session.Form) throws -> EventLoopFuture<HubkitModel.Session> {
         send(.POST, to: "sessions", beforeSend: { try $0.content.encode(session) })
             .flatMapThrowing { try $0.content.decode(HubkitModel.Session.self, using: decoder) }
     }
