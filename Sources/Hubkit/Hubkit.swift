@@ -36,7 +36,7 @@ public struct HubkitClient: HubkitProvider {
     
     public func delegating(to eventLoop: EventLoop) -> HubkitProvider {
         HubkitClient(config: config, eventLoop: eventLoop, client: client.delegating(to: eventLoop))
-      }
+    }
 }
 
 // MARK: - Send message
@@ -51,7 +51,7 @@ extension HubkitClient {
     ///
     /// - Returns: Future<Account>
     public func account() throws -> EventLoopFuture<HubkitModel.Account> {
-        getRequest(endpoint: "me").flatMapThrowing { try $0.content.decode(HubkitModel.Account.self, using: decoder) }
+        send(.GET, to: "me").flatMapThrowing { try $0.content.decode(HubkitModel.Account.self, using: decoder) }
     }
 
     /// Get `Device` for given UUID
@@ -61,7 +61,8 @@ extension HubkitClient {
     ///
     /// - Returns: Future<Device>
     public func device(id: UUID) throws -> EventLoopFuture<HubkitModel.Device> {
-        getRequest(endpoint: "devices/\(id.uuidString)").flatMapThrowing { try $0.content.decode(HubkitModel.Device.self, using: decoder) }
+        send(.GET, to: "devices/\(id.uuidString)")
+            .flatMapThrowing { try $0.content.decode(HubkitModel.Device.self, using: decoder) }
     }
 
     /// Activate `Device` for given UUID
@@ -71,7 +72,8 @@ extension HubkitClient {
     ///
     /// - Returns: Future<Device>
     public func activate(id: UUID) throws -> EventLoopFuture<HubkitModel.Device> {
-        patchRequest(endpoint: "devices/\(id.uuidString)/activate").flatMapThrowing { try $0.content.decode(HubkitModel.Device.self, using: decoder) }
+        send(.PATCH, to: "devices/\(id.uuidString)/activate")
+            .flatMapThrowing { try $0.content.decode(HubkitModel.Device.self, using: decoder) }
     }
 
     /// Get `Session` for given UUID
@@ -81,6 +83,7 @@ extension HubkitClient {
     ///
     /// - Returns: Future<Session>
     public func session(id: UUID) throws -> EventLoopFuture<HubkitModel.Session> {
-        getRequest(endpoint: "sessions/\(id.uuidString)").flatMapThrowing { try $0.content.decode(HubkitModel.Session.self, using: decoder) }
+        send(.GET, to: "sessions/\(id.uuidString)")
+            .flatMapThrowing { try $0.content.decode(HubkitModel.Session.self, using: decoder) }
     }
 }
