@@ -47,10 +47,10 @@ public enum Endpoint {
 
         public var uri: String {
             switch self {
-            case .get(let id): return "devices\(id.uuidString)"
-            case .activate(let id): return "devices\(id.uuidString)/activate"
+            case .get(let id): return "devices/\(id.uuidString)"
+            case .activate(let id): return "devices/\(id.uuidString)/activate"
             case .create: return "devices"
-            case .update(let device): return "devices\(device.id.uuidString)"
+            case .update(let device): return "devices/\(device.id.uuidString)"
             }
         }
 
@@ -79,10 +79,10 @@ public enum Endpoint {
 
         public var uri: String {
             switch self {
-            case .get(let id): return "sessions\(id.uuidString)"
-            case .ready(let id): return "sessions\(id.uuidString)/ready"
+            case .get(let id): return "sessions/\(id.uuidString)"
+            case .ready(let id): return "sessions/\(id.uuidString)/ready"
             case .create: return "sessions"
-            case .delete(let id): return "sessions\(id.uuidString)"
+            case .delete(let id): return "sessions/\(id.uuidString)"
             }
         }
 
@@ -107,7 +107,7 @@ public enum Endpoint {
 
         public var uri: String {
             switch self {
-            case .get(let id): return "raw_datas\(id.uuidString)"
+            case .get(let id): return "raw_datas/\(id.uuidString)"
             case .create: return "raw_datas"
             }
         }
