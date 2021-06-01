@@ -17,7 +17,7 @@ extension HubkitClient {
         headers.add(name: .accept, value: "application/json")
         headers.add(name: "apikey", value: config.apiKey)
 
-        let uri = URI(string: "\(self.baseApiUrl)/\(endpoint)")
+        let uri = URI(string: "\(config.baseUrl)/\(endpoint)")
 
         return self.client.send(method, headers: headers, to: uri, beforeSend: beforeSend)
             .flatMapThrowing { try self.parse(response: $0) }
