@@ -67,7 +67,7 @@ extension HubkitClient {
     ///   - body: `Content`
     ///
     /// - Returns: Future<ResponseEncodable>
-    public func device<C: Content>(_ endpoint: Endpoint.Device, body: C?) throws -> EventLoopFuture<ResponseEncodable> {
+    public func device<C: Content>(_ endpoint: Endpoint.Device, body: C? = nil) throws -> EventLoopFuture<ResponseEncodable> {
         send(endpoint.method, to: endpoint.uri, beforeSend: { req in
             if let content = body { try req.content.encode(content) }
         }).flatMapThrowing { try $0.content.decode(HubkitModel.Device.self, using: decoder) }
@@ -80,7 +80,7 @@ extension HubkitClient {
     ///   - body: `Content`
     ///
     /// - Returns: Future<ResponseEncodable>
-    public func session<C: Content>(_ endpoint: Endpoint.Session, body: C?) throws -> EventLoopFuture<ResponseEncodable> {
+    public func session<C: Content>(_ endpoint: Endpoint.Session, body: C? = nil) throws -> EventLoopFuture<ResponseEncodable> {
         send(endpoint.method, to: endpoint.uri, beforeSend: { req in
             if let content = body { try req.content.encode(content) }
         }).flatMapThrowing { try $0.content.decode(HubkitModel.Session.self, using: decoder) }
@@ -93,7 +93,7 @@ extension HubkitClient {
     ///   - body: `Content`
     ///
     /// - Returns: Future<ResponseEncodable>
-    public func rawData<C: Content>(_ endpoint: Endpoint.RawData, body: C?) throws -> EventLoopFuture<ResponseEncodable> {
+    public func rawData<C: Content>(_ endpoint: Endpoint.RawData, body: C? = nil) throws -> EventLoopFuture<ResponseEncodable> {
         send(endpoint.method, to: endpoint.uri, beforeSend: { req in
             if let content = body { try req.content.encode(content) }
         }).flatMapThrowing { try $0.content.decode(HubkitModel.RawData.self, using: decoder) }
