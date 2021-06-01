@@ -5,8 +5,14 @@ extension HubkitModel.RawData: Content {}
 
 public extension HubkitModel.RawData {
     struct Form: Content {
-        let session: UUID
-        let device: UUID
-        let file: File
+        public let session: UUID
+        public let device: UUID
+        public let file: File
+
+        public init(session: UUID, device: UUID, file: File) {
+            self.session = session
+            self.device = device
+            self.file = file
+        }
     }
 }
