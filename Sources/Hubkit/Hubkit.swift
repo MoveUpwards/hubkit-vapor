@@ -4,11 +4,10 @@ import HubkitModel
 
 // MARK: - Service
 public protocol HubkitProvider {
-    func account() throws -> EventLoopFuture<HubkitModel.Account>
-    func device(id: UUID) throws -> EventLoopFuture<HubkitModel.Device>
-    func activate(id: UUID) throws -> EventLoopFuture<HubkitModel.Device>
-    func session(id: UUID) throws -> EventLoopFuture<HubkitModel.Session>
-    func rawData(id: UUID) throws -> EventLoopFuture<HubkitModel.RawData>
+    func account(_ endpoint: Endpoint.Account) throws -> EventLoopFuture<ResponseEncodable>
+    func device(_ endpoint: Endpoint.Device) throws -> EventLoopFuture<ResponseEncodable>
+    func session(_ endpoint: Endpoint.Session) throws -> EventLoopFuture<ResponseEncodable>
+    func rawData(_ endpoint: Endpoint.RawData) throws -> EventLoopFuture<ResponseEncodable>
     
     func delegating(to eventLoop: EventLoop) -> HubkitProvider
 }
@@ -51,51 +50,41 @@ extension HubkitClient {
     /// Get `Account` linked to api key
     ///
     /// - Returns: Future<Account>
-    public func account() throws -> EventLoopFuture<HubkitModel.Account> {
-        send(.GET, to: "me").flatMapThrowing { try $0.content.decode(HubkitModel.Account.self, using: decoder) }
+    public func account(_ endpoint: Endpoint.Account) throws -> EventLoopFuture<ResponseEncodable> {
+        send(endpoint.method, to: endpoint.uri)
+            .flatMapThrowing { try $0.content.decode(HubkitModel.Account.self, using: decoder) }
     }
 
-    /// Get `Device` for given UUID
+    /// `Device`available endpoints
     ///
     /// - Parameters:
-    ///   - id: UUID
+    ///   - endpoint: `Endpoint.Device`
     ///
     /// - Returns: Future<Device>
-    public func device(id: UUID) throws -> EventLoopFuture<HubkitModel.Device> {
-        send(.GET, to: "devices/\(id.uuidString)")
+    public func device(_ endpoint: Endpoint.Device) throws -> EventLoopFuture<ResponseEncodable> {
+        send(endpoint.method, to: endpoint.uri)
             .flatMapThrowing { try $0.content.decode(HubkitModel.Device.self, using: decoder) }
     }
 
-    /// Activate `Device` for given UUID
+    /// `Session` available endpoints
     ///
     /// - Parameters:
-    ///   - id: UUID
-    ///
-    /// - Returns: Future<Device>
-    public func activate(id: UUID) throws -> EventLoopFuture<HubkitModel.Device> {
-        send(.PATCH, to: "devices/\(id.uuidString)/activate")
-            .flatMapThrowing { try $0.content.decode(HubkitModel.Device.self, using: decoder) }
-    }
-
-    /// Get `Session` for given UUID
-    ///
-    /// - Parameters:
-    ///   - id: UUID
+    ///   - endpoint: `Endpoint.Session`
     ///
     /// - Returns: Future<Session>
-    public func session(id: UUID) throws -> EventLoopFuture<HubkitModel.Session> {
-        send(.GET, to: "sessions/\(id.uuidString)")
+    public func session(_ endpoint: Endpoint.Session) throws -> EventLoopFuture<ResponseEncodable> {
+        send(endpoint.method, to: endpoint.uri)
             .flatMapThrowing { try $0.content.decode(HubkitModel.Session.self, using: decoder) }
     }
 
-    /// Get `RawData` for given UUID
+    /// `RawData` available endpoints
     ///
     /// - Parameters:
-    ///   - id: UUID
+    ///   - endpoint: `Endpoint.RawData`
     ///
-    /// - Returns: Future<Session>
-    public func rawData(id: UUID) throws -> EventLoopFuture<HubkitModel.RawData> {
-        send(.GET, to: "raw_datas/\(id.uuidString)")
+    /// - Returns: Future<RawData>
+    public func rawData(_ endpoint: Endpoint.RawData) throws -> EventLoopFuture<ResponseEncodable> {
+        send(endpoint.method, to: endpoint.uri)
             .flatMapThrowing { try $0.content.decode(HubkitModel.RawData.self, using: decoder) }
     }
 }
