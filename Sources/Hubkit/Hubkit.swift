@@ -6,7 +6,7 @@ import HubkitModel
 public protocol HubkitProvider {
     func account() throws -> EventLoopFuture<HubkitModel.Account>
 
-    func create(device: HubkitModel.Device) throws -> EventLoopFuture<HubkitModel.Device>
+    func create(device: HubkitModel.Device.Form) throws -> EventLoopFuture<HubkitModel.Device>
     func device(id: UUID) throws -> EventLoopFuture<HubkitModel.Device>
     func activate(device id: UUID) throws -> EventLoopFuture<HubkitModel.Device>
 
@@ -72,7 +72,7 @@ extension HubkitClient {
     /// Create `Device`
     ///
     /// - Returns: Future<HubkitModel.Device>
-    public func create(device: HubkitModel.Device) throws -> EventLoopFuture<HubkitModel.Device> {
+    public func create(device: HubkitModel.Device.Form) throws -> EventLoopFuture<HubkitModel.Device> {
         send(.POST, to: "devices", beforeSend: { try $0.content.encode(device) })
             .flatMapThrowing { try $0.content.decode(HubkitModel.Device.self, using: decoder) }
     }
