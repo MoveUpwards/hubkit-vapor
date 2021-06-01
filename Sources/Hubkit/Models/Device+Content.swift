@@ -5,21 +5,21 @@ extension Device: Content {}
 
 public extension HubkitModel.Device {
     struct Form: Content {
-        let project: UUID
-        let name: String
-        let macAddress: String
-        let hardwareVersion: String
-        let firmwareVersion: String
-        let sensorType: String
-        let manualMode: Bool
-        let activated: Bool
-        let latitude: Double?
-        let longitude: Double?
-        let battery: Int?
-        let activatedAt: Date?
-        let externalUUID: String?
-
-        init(
+        public let project: UUID
+        public let name: String
+        public let macAddress: String
+        public let hardwareVersion: String
+        public let firmwareVersion: String
+        public let sensorType: String
+        public let manualMode: Bool
+        public let activated: Bool
+        public let latitude: Double?
+        public let longitude: Double?
+        public let battery: Int?
+        public let activatedAt: Date?
+        public let externalUUID: String?
+        
+        public init(
             project: UUID,
             name: String,
             macAddress: String,
