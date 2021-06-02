@@ -15,7 +15,9 @@ extension HubkitModel.AlgorithmType {
             case params
         }
 
-        public init(algorithm: AlgorithmType, params: Ippt) throws {
+        public init(algorithm: AlgorithmType) throws {
+            guard let params = algorithm.params as? Ippt else { throw HubkitError.encodingProblem }
+
             self.algorithm = algorithm.algorithm
             self.type = algorithm.dataType
             self.params = params
@@ -37,7 +39,9 @@ extension HubkitModel.AlgorithmType {
             case params
         }
 
-        public init(algorithm: AlgorithmType, params: Session) throws {
+        public init(algorithm: AlgorithmType) throws {
+            guard let params = algorithm.params as? Session else { throw HubkitError.encodingProblem }
+
             self.algorithm = algorithm.algorithm
             self.type = algorithm.dataType
             self.params = params
@@ -59,7 +63,9 @@ extension HubkitModel.AlgorithmType {
             case params
         }
 
-        public init(algorithm: AlgorithmType, params: Timeline) throws {
+        public init(algorithm: AlgorithmType) throws {
+            guard let params = algorithm.params as? Timeline else { throw HubkitError.encodingProblem }
+
             self.algorithm = algorithm.algorithm
             self.type = algorithm.dataType
             self.params = params
