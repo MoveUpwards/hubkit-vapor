@@ -17,7 +17,11 @@ public protocol HubkitProvider {
 
     func create(rawData: HubkitModel.RawData.Form) throws -> EventLoopFuture<HubkitModel.RawData>
     func rawData(id: UUID) throws -> EventLoopFuture<HubkitModel.RawData>
-    
+
+    func process(session id: UUID, ippt: HubkitModel.AlgorithmType.IpptForm) throws -> EventLoopFuture<ClientResponse>
+    func process(session id: UUID, session: HubkitModel.AlgorithmType.SessionForm) throws -> EventLoopFuture<ClientResponse>
+    func process(session id: UUID, timeline: HubkitModel.AlgorithmType.TimelineForm) throws -> EventLoopFuture<ClientResponse>
+
     func delegating(to eventLoop: EventLoop) -> HubkitProvider
 }
 
@@ -71,6 +75,8 @@ extension HubkitClient {
 extension HubkitClient {
     /// Create `Device`
     ///
+    /// - Parameters:
+    ///   - device: `HubkitModel.Device.Form`
     /// - Returns: Future<HubkitModel.Device>
     public func create(device: HubkitModel.Device.Form) throws -> EventLoopFuture<HubkitModel.Device> {
         send(.POST, to: "devices", beforeSend: { try $0.content.encode(device) })
@@ -79,6 +85,8 @@ extension HubkitClient {
 
     /// Get `Device`
     ///
+    /// - Parameters:
+    ///   - id: `Device` uuid
     /// - Returns: Future<HubkitModel.Device>
     public func device(id: UUID) throws -> EventLoopFuture<HubkitModel.Device> {
         send(.GET, to: "devices/\(id.uuidString)")
@@ -87,6 +95,8 @@ extension HubkitClient {
 
     /// Activate `Device`
     ///
+    /// - Parameters:
+    ///   - device: `Device` uuid
     /// - Returns: Future<HubkitModel.Device>
     public func activate(device id: UUID) throws -> EventLoopFuture<HubkitModel.Device> {
         send(.PATCH, to: "devices/\(id.uuidString)/activate")
@@ -99,6 +109,8 @@ extension HubkitClient {
 extension HubkitClient {
     /// Create `Session`
     ///
+    /// - Parameters:
+    ///   - session: `HubkitModel.Session.Form`
     /// - Returns: Future<HubkitModel.Device>
     public func create(session: HubkitModel.Session.Form) throws -> EventLoopFuture<HubkitModel.Session> {
         send(.POST, to: "sessions", beforeSend: { try $0.content.encode(session) })
@@ -107,6 +119,8 @@ extension HubkitClient {
 
     /// Get `Session`
     ///
+    /// - Parameters:
+    ///   - id: `Session` uuid
     /// - Returns: Future<HubkitModel.Session>
     public func session(id: UUID) throws -> EventLoopFuture<HubkitModel.Session> {
         send(.GET, to: "sessions/\(id.uuidString)")
@@ -115,6 +129,8 @@ extension HubkitClient {
 
     /// Ready `Session`
     ///
+    /// - Parameters:
+    ///   - session: `Session` uuid
     /// - Returns: Future<HubkitModel.Session>
     public func ready(session id: UUID) throws -> EventLoopFuture<HubkitModel.Session> {
         send(.PATCH, to: "sessions/\(id.uuidString)/ready")
@@ -123,6 +139,8 @@ extension HubkitClient {
 
     /// Ready `Session`
     ///
+    /// - Parameters:
+    ///   - id: `Session` uuid
     /// - Returns: Future<HubkitModel.Session>
     public func delete(session id: UUID) throws -> EventLoopFuture<HTTPStatus> {
         send(.DELETE, to: "sessions/\(id.uuidString)")
@@ -135,6 +153,8 @@ extension HubkitClient {
 extension HubkitClient {
     /// Create `RawData`
     ///
+    /// - Parameters:
+    ///   - rawData: `HubkitModel.RawData.Form`
     /// - Returns: Future<HubkitModel.RawData>
     public func create(rawData: HubkitModel.RawData.Form) throws -> EventLoopFuture<HubkitModel.RawData> {
         send(.POST, to: "raw_datas", beforeSend: { try $0.content.encode(rawData) })
@@ -143,9 +163,43 @@ extension HubkitClient {
 
     /// Get `RawData`
     ///
+    /// - Parameters:
+    ///   - id: `RawData` uuid
     /// - Returns: Future<HubkitModel.RawData>
     public func rawData(id: UUID) throws -> EventLoopFuture<HubkitModel.RawData> {
         send(.GET, to: "raw_datas/\(id.uuidString)")
             .flatMapThrowing { try $0.content.decode(HubkitModel.RawData.self, using: decoder) }
+    }
+}
+
+// MARK: - Algorithm
+
+extension HubkitClient {
+    /// Process `IPPT`
+    ///
+    /// - Parameters:
+    ///   - session: `Session` uuid
+    ///   - ippt: `HubkitModel.AlgorithmType.IpptForm`
+    /// - Returns: Future<ClientResponse>
+    public func process(session id: UUID, ippt: HubkitModel.AlgorithmType.IpptForm) throws -> EventLoopFuture<ClientResponse> {
+        send(.POST, to: "algorithm/process/\(id.uuidString)", beforeSend: { try $0.content.encode(ippt) })
+    }
+    /// Process `Session`
+    ///
+    /// - Parameters:
+    ///   - session: `Session` uuid
+    ///   - ippt: `HubkitModel.AlgorithmType.SessionForm`
+    /// - Returns: Future<ClientResponse>
+    public func process(session id: UUID, session: HubkitModel.AlgorithmType.SessionForm) throws -> EventLoopFuture<ClientResponse> {
+        send(.POST, to: "algorithm/process/\(id.uuidString)", beforeSend: { try $0.content.encode(session) })
+    }
+    /// Process `Timeline`
+    ///
+    /// - Parameters:
+    ///   - session: `Session` uuid
+    ///   - ippt: `HubkitModel.AlgorithmType.TimelineForm`
+    /// - Returns: Future<ClientResponse>
+    public func process(session id: UUID, timeline: HubkitModel.AlgorithmType.TimelineForm) throws -> EventLoopFuture<ClientResponse> {
+        send(.POST, to: "algorithm/process/\(id.uuidString)", beforeSend: { try $0.content.encode(timeline) })
     }
 }
