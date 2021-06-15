@@ -1,6 +1,12 @@
 import Vapor
 
 public enum HubkitError: Error {
+    /// Missing project identifier
+    case missingProjectId
+
+    /// Missing session capture date
+    case missingCaptureDate
+
     /// Encoding problem
     case encodingProblem
     
@@ -13,6 +19,8 @@ public enum HubkitError: Error {
     /// Identifier
     public var identifier: String {
         switch self {
+        case .missingCaptureDate: return "hubkit.missing_captured_at"
+        case .missingProjectId: return "hubkit.missing_project_id"
         case .encodingProblem: return "hubkit.encoding_error"
         case .authenticationFailed: return "hubkit.auth_failed"
         case .unknownError: return "hubkit.unknown_error"
@@ -22,6 +30,8 @@ public enum HubkitError: Error {
     /// Reason
     public var reason: String {
         switch self {
+        case .missingCaptureDate: return "Missing capture date"
+        case .missingProjectId: return "Missing project identifier"
         case .encodingProblem: return "Encoding problem"
         case .authenticationFailed: return "Failed authentication"
         case .unknownError: return "Generic error"

@@ -32,9 +32,9 @@
         "package": "hubkit-model-swift",
         "repositoryURL": "https://github.com/MoveUpwards/hubkit-model-swift.git",
         "state": {
-          "branch": null,
-          "revision": "b5bda61b5a1e3757aa7174aadf60aa8c46ca337a",
-          "version": "2.0.3"
+          "branch": "develop",
+          "revision": "97353c620c690333cccb929a2beb79b1d4b4d155",
+          "version": null
         }
       },
       {
@@ -137,12 +137,21 @@
         }
       },
       {
+        "package": "tibtop-model-core",
+        "repositoryURL": "git@gitlab.com:vbkam/tibtop-model-core.git",
+        "state": {
+          "branch": "develop",
+          "revision": "8d7607be2b596bcec546305a2f993fb765082ef2",
+          "version": null
+        }
+      },
+      {
         "package": "vapor",
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
           "branch": null,
-          "revision": "9d154df6214a1d6027f04a495e8981bac49224da",
-          "version": "4.45.6"
+          "revision": "bc194e3868cbd9cf3cd41392e9b10d6fad089bc4",
+          "version": "4.45.7"
         }
       },
       {
