@@ -124,9 +124,7 @@ extension HubkitClient {
     /// - Returns: Future<HubkitModel.Session>
     public func session(id: UUID) throws -> EventLoopFuture<HubkitModel.Session> {
         send(.GET, to: "sessions/\(id.uuidString)")
-            .flatMapThrowing {
-                try $0.content.decode(HubkitModel.Session.self, using: decoder)
-            }
+            .flatMapThrowing { try $0.content.decode(HubkitModel.Session.self, using: decoder) }
     }
 
     /// Ready `Session`

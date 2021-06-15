@@ -20,6 +20,8 @@ extension HubkitClient {
         let uri = URI(string: "\(config.baseUrl)/\(endpoint)")
 
         return self.client.send(method, headers: headers, to: uri, beforeSend: beforeSend)
-            .flatMapThrowing { try self.parse(response: $0) }
+            .flatMapThrowing {
+                try self.parse(response: $0)
+            }
     }
 }
