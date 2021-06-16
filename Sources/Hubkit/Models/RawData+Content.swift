@@ -1,12 +1,12 @@
 import Vapor
 import HubkitModel
 
-extension HubkitModel.RawData: Content {
-    public static var defaultContentType: HTTPMediaType { .multipart }
-}
+extension HubkitModel.RawData: Content {}
 
 public extension HubkitModel.RawData {
     struct Form: Content {
+        public static var defaultContentType: HTTPMediaType { .multipart }
+        
         public let session: UUID
         public let device: UUID
         public let file: File
