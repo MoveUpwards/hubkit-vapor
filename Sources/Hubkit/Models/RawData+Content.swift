@@ -5,8 +5,8 @@ extension HubkitModel.RawData: Content {}
 
 public extension HubkitModel.RawData {
     struct Form: Content {
-        public static var defaultContentType: HTTPMediaType { .multipart }
-        
+        //public static var defaultContentType: HTTPMediaType { .formData(boundary: <#T##String#>) }
+
         public let session: UUID
         public let device: UUID
         public let file: File
