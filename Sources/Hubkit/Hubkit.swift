@@ -158,7 +158,9 @@ extension HubkitClient {
     /// - Returns: Future<HubkitModel.RawData>
     public func create(rawData: HubkitModel.RawData.Form) throws -> EventLoopFuture<HubkitModel.RawData> {
         send(.POST, to: "raw_datas", beforeSend: { try $0.content.encode(rawData) })
-            .flatMapThrowing { try $0.content.decode(HubkitModel.RawData.self, using: decoder) }
+            .flatMapThrowing {
+                try $0.content.decode(HubkitModel.RawData.self, using: decoder)
+            }
     }
 
     /// Get `RawData`
